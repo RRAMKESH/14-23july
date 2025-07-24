@@ -1,0 +1,1190 @@
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link link href='https://fonts.googleapis.com/css?family=Anek Devanagari' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #c1cefa; font-family:anek devanagari; user-select:none; margin: 0 10px;
+ }
+    .card { background-color: #000; color: white; border-radius: 2rem 2rem 0rem 0rem; margin-top:120px; padding: 2rem 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .option { border: 1px solid rgb(52,52,21,0.2); border-radius: 1rem; padding: 0.5rem 1rem; margin: 0.5rem 0; color:#000; font-size:13px; cursor: pointer; }
+    #questionText {color:#000; line-height:1.7; font-weight:700; font-size:14.5px;}
+    
+   .quiz-card {
+    background: white;
+    color: #000;
+    border-radius: 0.5rem;
+    padding: 1rem 1rem 4rem 1rem;
+    width: 100%;
+      max-width: 480px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.52);
+  }
+ #timerrc2 {
+    width: 38px;
+    position:absolute;
+    height: 38px;
+    right:45px;
+    margin-top:-28px;
+    background: linear-gradient(135deg, #9333ea, #7e22ce);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(128, 0, 128, 0.2);
+    transition: background 0.3s ease;
+  }
+
+  /* Timer Blinking Animation */
+  .blink {
+    animation: blinker 1s linear infinite;
+  }
+
+  @keyframes blinker {
+    50% { opacity: 0.3; }
+  }
+
+  /* Timer Alert Text */
+  #timerrc2Text {
+    font-size: 9px;
+    position:absolute;
+    color: red; /* Tailwind red-600 */
+    font-weight: 600;
+    width:70px;
+    margin-top:14px;
+    background:#fff;
+    line-height:20px;
+    padding:0px 5px;
+    border-radius:25px 20px 0px 0px;
+    right:30px;
+    animation: fadeIn 0.4s ease-in-out;
+    min-height: 1.2rem;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Timer Section Container */
+  #timerSection {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  input[type="checkbox"] {
+  width: 1rem;
+  height: 0.7rem;
+}
+    .correct { background-color: #52c55e !important; }
+    .wrong { background-color: #ef5252 !important; }
+    .selected { background-color: #c084fc !important; }
+    
+     .shake-error {
+    color: red;
+    animation: shake 0.3s;
+  }
+
+  .shake-error input[type="checkbox"] {
+    outline: 2px solid red;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    52% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+  }
+  
+@keyframes zoomOut {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.zoom-out {
+  animation: zoomOut 0.3s ease-out;
+}
+
+@keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.3);
+      opacity: 0.3;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 1.5s infinite ease-in-out;
+  }
+  
+  #topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #000;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+  }
+
+  #quizTitle {
+    font-size: 13px;
+    letter-spacing:0.5px;
+    font-weight: 700;
+    line-height:1.5;
+    color: orange;
+  }
+ 
+ .palette-scroll-container {
+  display: flex;
+  flex-wrap: wrap;              /* ✅ लाइन ब्रेक की अनुमति */
+  max-height: 76px;            /* ✅ कंटेनर की सीमित ऊँचाई */
+  overflow-y: auto;             /* ✅ नीचे की ओर scroll */
+  overflow-x: hidden;           /* ✅ horizontal scroll बंद */
+  gap: 10px;
+  padding: 10px;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+}
+
+.palette-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+.palette-scroll-container::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 4px;
+}
+.palette-btn {
+  width: 1.5rem;                 /* w-8 */
+  height: 1.5rem;                /* h-8 */
+  border-radius: 9999px;       /* rounded-full */
+  border: 1px solid #ccc;      /* border */
+  font-size: 9px;         /* text-sm */
+  font-weight: 700;            /* font-bold */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background-color: gray;   /* default background */
+  color: #fff;              /* default purple text */
+}
+
+/* जब currentQuestion हो */
+.palette-btn.current {
+  outline: 2px solid #facc15;  /* ring-yellow-300 */
+  outline-offset: 1px;
+}
+
+/* सही उत्तर */
+.palette-btn.correct {
+  background-color: #22c55e;   /* bg-green-500 */
+  color: white;
+}
+
+/* गलत उत्तर */
+.palette-btn.wrong {
+  background-color: #ef4444;   /* bg-red-500 */
+  color: white;
+}
+  </style>
+  <style>
+.option.shake-error {
+  animation: shake 0.5s;
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+</style>
+
+<body class="flex flex-col items-center justify-center min-h-screen">
+<div id="loaderOverlay" class="fixed inset-0 bg-white flex flex-col items-center justify-center z-[9999]">
+  <div class="w-20 h-20 rounded-full bg-red-500 opacity-70 animate-pulse-ring mb-6"></div>
+  <div class="text-red-800 text-lg font-semibold animate-pulse">Loading…</div>
+</div>
+<div id="consentScreenrc2" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden px-0">
+  <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md text-center text-purple-900 mx-2 relative overflow-visible">
+    
+    <!-- ✅ Image appearing from inside the popup (30% hidden below) -->
+    <div class="relative w-full overflow-hidden" style="margin-top: -80px; height: 150px; border-radius:20px;">
+      <img 
+        src="https://m2.getsitecontrol.com/images/273034/0ff8233be52678d52622d05360d9c148_332491178.png" 
+        class="w-full h-auto object-cover rounded-t-[2rem] relative z-10"
+        style="margin-bottom: -30px;"
+      />
+    </div>  
+  
+    <div class="bg-white rounded-2xl py-5 px-2 shadow-md p-1 mb-4">
+  <!-- Title -->
+  <h2 class="text-lg font-bold text-red-600 border-b pb-2 mb-3">साप्ताहिक करेंट अफेयर्स Quick Revision <p style="color:#000; font-size:10px;">14 से 23 जुलाई, 2025</p></h2>
+
+  <!-- Flex Fields -->
+  <div class="flex flex-wrap justify-between text-sm text-gray-800 gap-2">
+    
+    <div class="flex-1 min-w-[100px] bg-purple-50 px-4 py-3 rounded-lg shadow-inner border border-purple-200">
+      <div class="font-semibold text-gray-600">कुल प्रश्न</div>
+      <div class="text-sm font-bold text-purple-800">25</div>
+    </div>
+
+    <div class="flex-1 min-w-[100px] bg-purple-50 px-4 py-3 rounded-lg shadow-inner border border-purple-200">
+      <div class="font-semibold text-gray-600">समय</div>
+      <div class="text-sm font-bold text-purple-800">30s / प्रश्न</div>
+    </div>
+
+    <div class="flex-1 min-w-[100px] bg-purple-50 px-4 py-3 rounded-lg shadow-inner border border-purple-200">
+      <div class="font-semibold text-gray-600">भाषा</div>
+      <div class="text-sm font-bold text-purple-800">हिंदी</div>
+    </div>
+  </div>
+</div>
+   <div class="pt-3">
+      <label class="inline-flex items-center justify-center space-x-2 consent-box">
+        <input type="checkbox" id="consentCheckbox" class="form-checkbox text-purple-600 h-4 w-4">
+        <span class="text-sm">मैं Test देने के लिए तैयार हूँ</span>
+      </label><br>
+      <button id="startQuizBtn" onclick="acceptConsent()" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-7 rounded-full transition-all duration-300 opacity-50 cursor-not-allowed" disabled>
+        ✅ हाँ, शुरू करें
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="continueModalrc2" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-2xl p-6 w-80 text-center shadow-xl">
+    <h2 class="text-xl font-semibold mb-2 text-purple-700"><img width="30" src="https://www.svgrepo.com/show/438621/history-round.svg" style="position:absolute; margin-top:-10px; margin-left:-10px; vertical-align: middle;" /> पिछली क्विज़ मिली</h2>
+    <p class="text-gray-600 mb-4">आपने पहले भी इस टेस्ट को attempt किया है किसी कारण से आपने इसे बीच में ही छोड़ दिया था क्या आप इस टेस्ट को वहीं से जारी रखना चाहेंगे?</p>
+    <div class="flex justify-between">
+      <button onclick="resumeQuiz()" class="bg-green-600 text-white px-4 py-2 rounded-full">🚀   जी, हाँ</button>
+      <button onclick="startFresh()" class="bg-red-300 text-black-800 px-4 py-2 rounded-full">❌   नहीं</button>
+    </div>
+  </div>
+</div>
+<!-- Quiz Page -->
+<div id="quizPagerc2" class="quiz-card w-96 hidden">
+<div id="topBar" class="flex justify-between items-center bg-white shadow p-3 rounded-xl mb-4">
+  <div id="quizTitle" class="text-sm font-semibold text-gray-800">साप्ताहिक करेंट अफेयर्स Quick Revision<br><span style="font-size:10px; color:#ccc; letter-spacing:0.5px;">14 से 23 जुलाई, 2025</span></div>
+   <div id="timerSection">
+  <div id="timerrc2">30s</div>
+  <div id="timerrc2Text"></div>
+</div>
+</div>
+  <div  id="questionPaletterc2" class="palette-scroll-container">
+</div>
+  <div class="flex justify-between">
+    <button onclick="prevPage()"></button>
+    <span style="position:absolute; margin-top:-20px; font-size:13px; color:transparent; left:38px;"><span id="questionCounterrc2"></span></span>
+  </div>
+  <br>
+  <div id="question" class="text-sm font-medium mb-4 bg-red-100 p-4 rounded-xl w-full shadow-sm"><p id="questionText" class="mb-4"></p></div>
+  <div id="optionsContainer"></div>
+  <div id="descriptionBox" style="
+  display: none;
+  background: #f1f1f1;
+  margin-top: 10px;
+  padding: 12px;
+  line-height:1.7;
+  font-size:12px;
+  border-left: 4px solid #4caf50;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+">
+  <strong>📘 Explanation:</strong>
+  <div id="descriptionText"></div>
+</div>
+  <br>
+ <div id="nextBtnWrapperrc2" class="fixed bottom-0 left-0 w-full px-4 py-2 bg-none shadow-md">
+  <button id="nextBtnrc2"
+    onclick="submitAnswer()"
+    class="w-full bg-purple-600 text-white font-bold text-sm py-2 rounded-full transition duration-300 ease-in-out hover:bg-purple-700 shadow-xl">
+    Next Question ➲
+  </button>
+</div>
+</div>
+
+<!-- Result Page -->
+<div id="resultPagerc2" class="card w-full max-w-md mx-1.5 hidden text-center">
+<img width="100%" src="https://m2.getsitecontrol.com/images/273034/0ff8233be52678d52622d05360d9c148_332491178.png" style="position:absolute; height:150px; border-radius: 0px 0px 20px 20px; left:0px; top:0px; z-index:-1;" />
+<h2 id="quizTitleResult" class="text-2xl font-bold text-center text-red-600 mb-2">साप्ताहिक करेंट अफेयर्स Quick Revision <p style="color:pink; font-size:10px; letter-spacing:1.5px;">14 से 23 जुलाई, 2025</p></h2>
+  <div class="text-2xl mb-4">Your Score<br><span id="finalScorerc2" class="text-4xl text-yellow-600 font-bold">0 %</span></div>
+  <div id="userRankrc2" class="mt-4 text-green-600 text-lg font-semibold text-center"></div><br>
+  <div class="bg-white text-purple-700 p-2 rounded-lg shadow mb-4">
+    <div class="flex justify-between gap-2 mt-0 text-sm">
+      <div>
+      <div class="bg-blue-100 text-blue-800 px-3.5 py-2 rounded-xl shadow-sm">
+        <p class="font-bold" id="completionrc2"></p>
+        <p class="text-sm">पूर्णता</p>
+      </div></div>
+      <div>
+        <div class="bg-gray-100 text-gray-800 px-3.5 py-2 rounded-xl shadow-sm">
+        <p class="font-bold" id="totalQrc2"></p>
+        <p class="text-sm">कुल प्रश्न</p>
+      </div></div>
+      <div>
+      <div class="bg-green-100 text-green-800 px-3.5 py-2 rounded-xl shadow-sm">
+        <p class="font-bold text-green-600" id="correctrc2"></p>
+        <p class="text-sm">सही</p>
+      </div></div>
+      <div>
+      <div class="bg-red-100 text-red-800 px-3.5 py-2 rounded-xl shadow-sm">
+        <p class="font-bold text-red-600" id="wrongrc2"></p>
+        <p class="text-sm">गलत</p>
+      </div></div>
+    </div>
+  </div>
+ 
+  <div id="topLeaderboardrc2" class="bg-purple-100 text-purple-800 p-4 rounded shadow text-left text-sm max-h-60 overflow-y-auto mb-4"></div> 
+ 
+  <div id="scoreHistoryrc2" class="bg-white text-purple-900 p-4 rounded shadow text-left text-sm max-h-60 overflow-y-auto"></div> <br>
+  <div id="answerReviewrc2" class="bg-white text-red-600 p-4 rounded text-left text-sm max-h-100 overflow-y-auto mb-4"></div>
+  
+  <button onclick="showRestartPopup()"
+  class="mt-6 px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-full shadow-lg hover:scale-105 transform transition duration-300 ease-in-out hover:shadow-xl flex items-center gap-2 mx-auto">
+  Restart Quiz
+</button>
+
+  <div class="text-center">
+<!-- Restart Quiz Popup -->
+<div id="restartPopup" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden px-5">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="restartPopupBox">
+    <h2 class="text-xl font-bold text-purple-800 mb-4">फिर से प्रयास करें?</h2>
+    <p class="text-gray-700 mb-6">क्या आप क्विज़ को फिर से शुरू करना चाहते हैं?</p>
+    <div class="flex justify-between">
+      <button onclick="hideRestartPopup()"
+        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400 transition">
+        ❌ नहीं
+      </button>
+      <button onclick="resetQuiz()"
+        class="px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-full hover:scale-105 hover:shadow-lg transition transform duration-300">
+        ✅ हाँ, शुरू करें
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+<script>
+let currentQuestion = 0;
+let score = 0;
+let timer;
+let timeLeft = 60;
+const questions = [
+  
+   {
+        "question": "हाल ही में विम्बलडन 2025 पुरुष एकल का ख़िताब किसने जीता है ?",
+    "options": ["Carlos Alcaraz", "Novac Djokovic", "Jannik Sinner ", "Daniil Medvedev "],
+    "answer": 2,
+  "description":  "Jannik Sinner (Italy) ने Carlos Alcaraz (Spain) को हराकर Wimbledon 2025 में Men's Singles का ख़िताब जीता है |"
+       },
+       
+       {
+        "question": "पारम्परिक ज्ञान डिजिटल लाइब्रेरी (TKDL) lounch करने वाला दुनिया का पहला देश कौन बना है ?",
+    "options": ["चीन ", "भारत ", "इटली  ", "जापान "],
+    "answer": 1,
+  "description": "भारत ने दुनिया की पहली Traditional Knowledge Digital Library (TKDL) को Lounch किया है यह एक ऑनलाइन प्लेटफार्म है, जिसे भारत की Traditional Medicine को दुनिया तक पहुंचाने के लिए और उसे बचाने के लिए लाया गया है।"
+       },
+       
+       {
+        "question": " हाल ही में हरियाणा के नए राज्यपाल के रूप में किसे नियुक्त किया गया है ?",
+    "options": ["Bandaru Dattatreya  ", "C.P. Radhakrishanan ", "La. Ganesan   ", "Prof. Ashim Kumar Ghosh"],
+    "answer": 3,
+  "description": "***"
+       },
+       
+       {
+        "question": "जून 2025 के लिए ICC Men's Player of the Month किसे चुना गया है ?",
+    "options": ["Jasprit Bumrah", "Aiden Markram  ", "Pat Cummins ", "Travis Head"],
+    "answer": 1,
+  "description": "जून 2025 के लिए Men's Player of the Month साउथ अफ्रीका के प्लेयर Aiden Markram एवं Women's Player Of the Month वेस्ट इंडीज की कप्तान Hayley Matthews को चुना गया है |"
+       },
+       
+       {
+        "question": "QS Best Student Cities Rankings 2026 के अनुसार, छात्रों के लिए दुनिया का सबसे अच्छा शहर कौन सा है ?",
+    "options": ["London", "Tokyo", "Seoul ", "Melbourne "],
+    "answer": 2,
+  "description": "हाल ही में Quacquarelli Symonds (QS) ने अपनी Best Student Cities Ranking 2026 को जारी किया गया है जिसमें International Students के लिए अलग अलग फैक्टर्स पर best सिटीज को रैंक दिया गया है जिसमें भारत में सबसे best रैंक मुंबई की है, जिसकी 98th रैंक आई है ।"
+       },
+       
+       {
+        "question": "'प्रधानमन्त्री धन-धान्य योजना' जिसे हाल ही में Approve किया गया है इसके लिए 2025-26 के लिए वार्षिक बजट कितना रखा गया है ?",
+    "options": ["20,000 crore", "15,000 crore", "30,000 crore ", "24,000 crore"],
+    "answer": 3,
+  "description": "भारत सरकार ने 'प्रधानमन्त्री धन धान्य कृषि योजना' योजना को मंजूरी डे दी है यह योजना 6 साल के लिए लागू की गई है और यह 2031-32 तक चलाई जायेगी | यह योजना देशभर के 100 जिलों में लागू की जायेगी इस योजना के तहत 100 जिलों में Agriculture Production को बढ़ाया जाएगा।"
+       },
+       
+       {
+        "question": "'आकाश प्राइम' रक्षा प्रणाली किसके द्वारा विकसित की गई है ?",
+    "options": ["Indian Space Research Organisation (ISRO) ", "Bharat Dynamics Limited (BDL) ", "Hindustan Aeronautics Llimited (HAL) ", "Defence Research and Development Organisation (DRDO)  "],
+    "answer": 3,
+  "description": "भारतीय सेना ने Akash Prime Surface-to-air- Missile System का सफल परीक्षण किया है यह परीक्षण लद्धाख में 5,000 फीट से ज्यादा की उंचाई पर किया गया है ।"
+       },
+       
+       {
+        "question": "हाल ही में कलिंग रत्न पुरस्कार 2024 से किसे सम्मानित किया गया है ?",
+    "options": ["Naveen Patnaik ", "Ashwini Vaishnav", "Dharmendra Pradhan  ", "Biswabhusan Harichand"],
+    "answer": 2,
+  "description": "2024 का कलिंग रत्न अवार्ड, Union Education Minister Dharmendra Pradhan को दिया गया यह अवार्ड उन्हें Education के क्षेत्र में सुधारों और Indian Languages को बढ़ावा देने के लिए दिया गया है।"
+       },
+       
+       {
+        "question": "भारत की पहली जनजातीय जीनोम अनुक्रमण परियोजना कहाँ शुरू की गई है ?",
+    "options": ["मध्य प्रदेश  ", "गुजरात ", "झारखंड ", "ओड़िशा "],
+    "answer": 1,
+  "description": "गुजरात में Tribal Genome Project शुरू किया गया है ऐसा करने वाला गुजरात, भारत  का पहला राज्य बन गया है | इसके तहत 17 जिलों के 2,000 से अधिक आदिवासी आबादी के DNA Samples मिल जायेंगे इससे इनमें होने वाली आनुवंशिक रोगों के बारे में बेहतर समझकर उन्हें बेहतर उपचार दिया जा सकेगा |"
+       },
+       
+       {
+        "question": "हाल ही में संयुक्त राष्ट्र नेल्सन मंडेला पुरस्कार 18 जुलाई, 2025 को किसे प्रदान किया गया ?",
+    "options": ["कोफ़ी अन्नान और ग्रेटा थुन्बर्ग  ", "नेल्सन मंडेला और महात्मा गांधी  ", "मलाला युसुफजई और कैलाश सत्यार्थी ", "ब्रेंडा रेनौल्ड्स और कैनेडी ओडेड "],
+    "answer": 3,
+  "description": "यह अवार्ड हर 5 साल में International Nelson Mandela Day (18 July) को दिया जाता है यह अवार्ड एक Woman और एक Men को दिया जाता है यह उन व्यक्तियों को दिया जाता है जिन्होंने Human Right, Social Justice और Humanity की सेवा में अपना जीवन समर्पित किया हो।"
+       },
+       
+       {
+        "question": "हाल ही में यूक्रेन की नई प्रधानमन्त्री किसे नियुक्त किया गया है ?",
+    "options": ["Yuliia Svyrydenko  ", "Denys Shmyhal", "Oksana Markarova", "Rustem Umerov"],
+    "answer": 0,
+  "description": "17 जुलाई 2025 को यूलिया स्विरीड़ेंको को यूक्रेन का नया प्रधानमन्त्री नियुक्त किया गया है यह नियुक्ति यूक्रेन के राष्ट्रपति Volodymyr Zalenskyy द्वारा की गई है।"
+       },
+       
+       {
+        "question": "किस भारतीय तेल रिफायनरी पर यूरोपीय संघ (EU) द्वारा प्रतिबन्ध लगाए गए हैं ?",
+    "options": ["Jamnagar Refinery", "Digboi Refinery  ", "Nayara Refinery ", "Numaligarh Refinery"],
+    "answer": 2,
+  "description": "18 जुलाई को European Union ने Russia पर प्रतिबन्ध लगाए गए हैं ये प्रतिबन्ध रूस की Oil Refinery, Ships और Banks पर लगाए गए हैं इसके तहत भारत की Nayara Energy Oil Refinery पर भी प्रतिबन्ध लगाए गए हैं यह रिफाइनरी गुजरात में स्थित है और इसमें रूस की कंपनी Rosneft की 49.13% हिस्सेदारी है | रूस पर यह प्रतिबन्ध यूक्रेन के खिलाफ युद्ध के कारण लगाये गए हैं |"
+       },
+       
+       {
+        "question": " किस देश को जुलाई 2025 में WHO द्वारा आधिकारिक तौर पर ट्रेकोमा मुक्त घोषित किया गया है ?",
+    "options": ["Ghana", "Egypt ", "Nigeria", "Senegal "],
+    "answer": 3,
+  "description": "Senegal देश को WHO के द्वारा Trachoma Free देश घोषित किया गया है इसके बाद ऐसा करने वाली दुनिया की 25th और अफ्रीका की 9th Country बन गई है | ट्रेकोमा आँखों का एक संक्रामक रोग है यह दुनिया में अंधत्व का सबसे बड़ा कारण है | मई में भारत को ट्रेकोमा मुक्त घोषित किया गया था जबकि भारत ने इसे 2024 में ख़त्म कर दिया था।"
+       },
+       
+       {
+        "question": " हाल ही में किसने The Resistance Front को आतंकवादी समूह घोषित किया है ?",
+    "options": ["United Nations", "United States of America", "Russia ", "Pakistan "],
+    "answer": 1,
+  "description": "TRF, Lashkar-e-taiba (LeT) का एक आतंकवादी संगठन है इसके बाद TRF अमेरिका की उस लिस्ट में आ गया है जिसमें उसने दुनिया के आतंकवादी संगठनों को शामिल किया है अभी इस लिस्ट में 71 आतंकवादी संगठन शामिल हैं आपको बता दें कि TRF ने ही भारत में पहलगाम आतंकी हमले की जिम्मेदारी ली थी।"
+       },
+       
+       {
+        "question": " भारत में राष्ट्रीय ध्वज दिवस कब मनाया जाता है ?",
+    "options": ["20 जुलाई  ", "21 जुलाई ", "22 जुलाई", "23 जुलाई"],
+    "answer": 2,
+  "description": "हर साल 22 जुलाई को भारत में National Flag Day मनाया जाता है यह दिवस भारत के राष्ट्रीय ध्वज के Adoption करने की याद में मनाया जाता है राष्ट्रीय ध्वज को July 22, 1947 को संविधान सभा में अपनाया गया था | विदेश में पहली बार 1907 में मैडम भीकाजी कामा के द्वारा जर्मनी में फहराया गया था और भारत में राष्ट्रीय ध्वज पहली बार कलकत्ता में 7 अगस्त, 1906 में फहराया गया।"
+       },
+       
+       {
+        "question": "प्राचीन मोड़ी लिपि को देवनागरी में परिवर्तित करने के लिए दुनिया का पहला AI मॉडल किसके द्वारा विकसित किया गया है ?",
+    "options": ["IIT Delhi", "IIT Bombay", "IIT Roorkee", "IIT Madras"],
+    "answer": 2,
+  "description": "IIT रूड़की के द्वारा दुनिया का पहला AI Model बनाया गया है जो कि Ancient Modi Script को Devanagari में Convert कर सकता है | Modi Script एक प्राचीन लिपि है, जिसे Medieval समय में मराठी भाषा को लिखने के लिए इस्तेमाल किया जाता था | मोड़ी लिपि में लिखे हुए लगभग 40 मिलियन डाक्यूमेंट्स हैं जिन्हें अब तक अनुवादित नहीं किया गया है ।"
+       },
+       
+       {
+        "question": "भारत का पहला क्रिएटिव टेक इंस्टिट्यूट कहाँ स्थापित किया गया है ?",
+    "options": ["बंगलुरु ", "मुंबई ", "नई दिल्ली  ", "चेन्नई  "],
+    "answer": 1,
+  "description": "यह भारत का पहला Creative Tech Institute है जिसका उद्येश्य VFX, Gaming, Animation जैसे subject को सिखाना है । "
+       },
+       
+       {
+        "question": "अगले तीन विश्व टेस्ट चैंपियनशिप फाइनल (2027, 2029 और 2031) की मेजबानी कौन सा देश करेगा ?",
+    "options": ["साउथ अफ्रीका", "इंग्लैंड ", "वियतनाम  ", "भारत "],
+    "answer": 1,
+  "description": "ICC ने घोषणा की है कि अगले 3 World Test Championship Finals का आयोजन इंग्लैंड में किया जाएगा ये फाइनल्स 2027, 2029 और 2031 में खेले जायेंगे।"
+       },
+       
+       {
+        "question": "भारत की पहली स्वदेशी मलेरिया वैक्सीन, जिसे ICMR द्वारा विकसित किया जा रहा है, उसका नाम क्या है ?",
+    "options": ["Covaxin", "MalariShield", "AdFalciVax", "VaxiMal"],
+    "answer": 2,
+  "description": "भारत की First Indigenous Malaria Vaccine का नाम AdFalciVax है यह एक 2 Stage Vaccine है यह व्यक्ति मलेरिया से बीमारी होने से भी बचाता है और मलेरिया के फैलने को भी रोकता है।"
+       },
+       
+       {
+        "question": "दूध उत्पादन क्षेत्र को बढ़ावा देने के लिए 'दूध सब्सिडी योजना' किस राज्य ने शुरू की है ?",
+    "options": ["असम  ", "बिहार  ", "ओड़िशा ", "पश्चिम बंगाल "],
+    "answer": 0,
+  "description":"इस योजना के तहत Cooperative Societies को Processing के लिए दूध बेचने पर Farmers को प्रति लीटर दूध पर 5 रूपये की सब्सिडी दी जायेगी। "
+       },
+     
+     
+        {
+        "question": "हाल ही में किसने सांस्कृतिक विविधता के लिए डब्ल्यूएसआईएस 2025 चैंपियन पुरस्कार जीता है ?",
+    "options": ["मेरा आधार ऐप ", "मेरी पंचायत ऐप", "Railone App", "My India App "],
+    "answer": 1,
+  "description": "केंद्रीय पंचायती राज मंत्रालय की  'मेरी पंचायत ऐप' ने संयुक्त राष्ट्र विश्व सूचना शिखर सम्मेलन (डबल्यूएसआईएस ) 2025 में पुरस्कार जीता है। इस पुरस्कार की घोषणा डबल्यूएसआईएस +20 फोरम उच्च-स्तरीय कार्यक्रम 2025 में की गई, जो 7 से 11 जुलाई 2025 तक स्विट्जरलैंड के जिनेवा शहर में आयोजित किया गया था। “मेरी पंचायत” ऐप एक प्रमुख एम-गवर्नेंस प्लेटफ़ॉर्म है जिसे केंद्रीय पंचायती राज मंत्रालय ने केंद्रीय इलेक्ट्रॉनिक्स और सूचना प्रौद्योगिकी मंत्रालय के अंतर्गत राष्ट्रीय सूचना विज्ञान केंद्र के सहयोग से विकसित किया है ।"
+       },
+       
+       {
+        "question": "हाल ही में उपराष्ट्रपति जगदीप धनखड़ ने अपने पद से इस्तीफ़ा दिया है यह संविधान के किस अनुच्छेद के अंतर्गत किया जाता है ?",
+    "options": ["अनुच्छेद 24 (ख) ", "अनुच्छेद 245 ", "अनुच्छेद 67 (क)", "अनुच्छेद 134"],
+    "answer": 2,
+  "description": "भारतीय संविधान के अनुच्छेद 67 (क) के अनुसार, एक कार्यरत उपराष्ट्रपति भारत के राष्ट्रपति को अपना त्यागपत्र भेजकर अपने पद से इस्तीफ़ा दे सकता है।"
+       },
+       
+       {
+        "question": "हाल ही में स्वच्छ सर्वेक्षण 2024-25 में किस शहर को स्वच्छता के लिए देश में प्रथम स्थान प्राप्त हुआ है ?",
+    "options": ["भोपाल ", "मुंबई ", "इंदौर ", "लखनऊ "],
+    "answer": 2,
+  "description": "राष्ट्रपति द्रौपदी मुर्मू ने 17 जुलाई 2025 को नई दिल्ली में आयोजित एक समारोह में विजेताओं को स्वच्छ सर्वेक्षण 2024-25 के 9वें संस्करण के पुरस्कार प्रदान किए। यह समारोह केंद्रीय आवास एवं शहरी मामलों के मंत्रालय द्वारा आयोजित किया गया था, जिसने 2016 में स्वच्छ सर्वेक्षण पुरस्कार की शुरुआत की थी। मध्य प्रदेश का इंदौर लगातार आठवें वर्ष भारत का सबसे स्वच्छ शहर बना रहा, उसके बाद सूरत (गुजरात) और नवी मुंबई (महाराष्ट्र) का स्थान रहा।"
+       },
+       
+       {
+        "question": "हाल ही में चीन ने किस नदी पर विशाल जल विधुत परियोजना शुरू की है ?",
+    "options": ["सतलज ", "ब्रह्मपुत्र  ", "झेलम  ", "गंगा  "],
+    "answer": 1,
+  "description": "चीन ने ब्रह्मपुत्र नदी पर एक विशाल जलविद्युत परियोजना का निर्माण तिब्बत में भारत के अरुणाचल प्रदेश की सीमा के निकट आधिकारिक रूप से शुरू कर दिया है। यह परियोजना रणनीतिक दृष्टिकोण से बेहद महत्वपूर्ण मानी जा रही है, क्योंकि ब्रह्मपुत्र नदी भारत और बांग्लादेश के लिए एक प्रमुख जलस्रोत है।"
+       },
+       
+       {
+        "question": "हर साल विश्व शतरंज दिवस कब मनाया जाता है ?",
+    "options": ["23 जुलाई ", "10 अगस्त ", "15 जुलाई  ", "20 जुलाई"],
+    "answer": 3,
+  "description": "विश्व शतरंज दिवस हर साल 20 जुलाई को दुनिया भर में मनाया जाता है, ताकि वर्ष 1924 में अंतरराष्ट्रीय शतरंज महासंघ (FIDE) की स्थापना को स्मरण किया जा सके। शतरंज की जड़ें प्राचीन भारत में लगभग 5वीं शताब्दी से जुड़ी हैं, जहाँ इसे “चतुरंग” कहा जाता था। समय के साथ यह खेल फारस, अरब और यूरोप होते हुए पूरे विश्व में फैल गया। विश्व शतरंज दिवस की पृष्ठभूमि विश्व शतरंज दिवस को औपचारिक रूप से FIDE की स्थापना की वर्षगांठ के रूप में मान्यता दी गई थी। वर्ष 1966 में UNESCO द्वारा इस दिन को वैश्विक स्तर पर मनाने का प्रस्ताव रखा गया, जिससे शतरंज के शिक्षा और अंतरराष्ट्रीय संवाद में योगदान को सराहा गया।"
+       }
+
+
+  
+];
+
+function anonymizePreviousYouEntry() {
+  let leaderboardrc2 = JSON.parse(localStorage.getItem("leaderboardrc2") || "[]");
+
+  const existingNames = leaderboardrc2.map(e => e.name);
+  leaderboardrc2 = leaderboardrc2.map(entry => {
+    if (entry.name === "you") {
+      return { ...entry, name: generateUniqueRandomName(existingNames) };
+    }
+    return entry;
+  });
+
+  localStorage.setItem("leaderboardrc2", JSON.stringify(leaderboardrc2));
+}
+
+window.onload = () => {
+questions.sort(() => Math.random() - 0.5); 
+  anonymizePreviousYouEntry();
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2"));
+
+  if (!localStorage.getItem("consentGivenrc2")) {
+    document.getElementById("consentScreenrc2").classList.remove("hidden");
+    return;
+  }
+
+  if (saved && saved.completed) {
+    showResultPage(saved);
+  } else if (saved && !saved.completed && typeof saved.currentQuestion === "number") {
+    document.getElementById("continueModalrc2").classList.remove("hidden");
+  } else {
+    document.getElementById("quizPagerc2").classList.remove("hidden");
+    showQuestion();
+  }
+};
+
+function handleNextClick() {
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2")) || { answered: {}, selected: {} };
+  const answeredStatus = saved.answered[currentQuestion];
+
+  // ✅ Allow submit if already answered (even via timeout)
+  if (answeredStatus === "correct" || answeredStatus === "wrong") {
+    submitAnswer();
+    return;
+  }
+
+  // ❌ If not answered, shake options
+  const options = document.querySelectorAll(".option");
+  options.forEach(opt => {
+    opt.classList.add("shake-error");
+    setTimeout(() => opt.classList.remove("shake-error"), 500);
+  });
+}
+
+
+function acceptConsent() {
+  const checkbox = document.getElementById("consentCheckbox");
+  const consentLabel = document.querySelector(".consent-box"); // label पर class ज़रूरी है
+
+  if (!checkbox.checked) {
+    consentLabel.classList.add("shake-error");
+
+    setTimeout(() => {
+      consentLabel.classList.remove("shake-error");
+    }, 5200);
+
+    return;
+  }
+
+  // ✅ अगर चेक किया गया है तो proceed करें
+  localStorage.setItem("consentGivenrc2", "true");
+  document.getElementById("consentScreenrc2").classList.add("hidden");
+
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2"));
+  if (saved && !saved.completed && typeof saved.currentQuestion === "number") {
+    document.getElementById("continueModalrc2").classList.remove("hidden");
+  } else {
+    document.getElementById("quizPagerc2").classList.remove("hidden");
+    showQuestion();
+  }
+}
+
+function generateLeaderboardrc2(userScorePercent) {
+  const namesFemale = ["गुंजन", "निहारिका", "कविता", "प्रिया", "स्वाति", "पूजा", "स्नेहा", "अनिता", "नेहा", "शालिनी","आरती कुशवाह", "किरण", "राधा", "संगीता", "मधु", "रेणु", "नंदिनी", "शिवानी", "तृप्ति", "भारती",
+"दिव्या", "पारुल", "प्रियंका", "आराधना", "ज्योति रावत", "मेघा", "तनु यादव", "रुचि", "रचना", "ममता",
+"कंचन शर्मा", "दीपा", "श्वेता शर्मा", "नूतन", "कल्पना", "सावित्री", "लक्ष्मी", "भावना", "अर्चना", "सुजाता",
+"कुहू यादव", "इरा खान", "पायल", "तन्वी रावत", "मान्या अवस्थी", "निकिता", "कविता", "नेहा शर्मा", "रिमा यादव", "अनामिका"];
+  const namesMale = ["अर्जुन वर्मा", "राहुल शर्मा", "अमित सिंह", "सौरभ पटेल", "अभिषेक त्रिपाठी", "विक्रम राठौर", "मनोज मिश्रा", "संजय यादव", "दीपक अग्रवाल", "अजय गुप्ता",
+"नितिन जोशी", "मयंक तिवारी", "पंकज चौधरी", "आकाश कुशवाह", "विकास मालवीय", "अंकित ठाकुर", "करण महाजन", "अमन कश्यप", "कुशल चतुर्वेदी", "रवि शुक्ला",
+"प्रमोद श्रीवास्तव", "सुमित सक्सेना", "नरेश रावत", "विनय पांडेय", "शिवम गुप्ता", "प्रकाश राजपूत", "सुनील ठाकुर", "राजीव वर्मा", "नीरज कुमार", "गौरव शर्मा",
+"योगेश सेठ", "हर्ष रावत", "दिनेश चौहान", "अशोक उपाध्याय", "ललित सेन", "कमलेश यादव", "अनिल जैन", "तेजस दवे", "रोहित बिष्ट", "शैलेश परमार",
+"भूपेंद्र यादव", "देवेश शंकर", "राजेश राठौड़", "श्रवण नागर", "मोहित मेहता", "धीरज बंसल", "विवेक सहगल", "अनुज बग्गा", "तरुण माथुर", "संदीप कुशवाह"];
+  const usedNames = new Set();
+
+  function getRandomName() {
+    let name;
+    do {
+      name = Math.random() < 0.8
+        ? namesFemale[Math.floor(Math.random() * namesFemale.length)]
+        : namesMale[Math.floor(Math.random() * namesMale.length)];
+    } while (usedNames.has(name));
+    usedNames.add(name);
+    return name;
+  }
+
+  function getRandomScore() {
+    return Math.floor(Math.random() * 35) + 60; // 60 to 90
+  }
+
+  let randomUsers = Array.from({ length: 9 }, () => ({
+    name: getRandomName(),
+    score: getRandomScore()
+  }));
+
+  let leaderboardrc2, userRank;
+
+  if (userScorePercent >= 60) {
+    randomUsers.push({ name: "you", score: userScorePercent });
+    leaderboardrc2 = [...randomUsers].sort((a, b) => b.score - a.score);
+    userRank = leaderboardrc2.findIndex(user => user.name === "you") + 1;
+  } else {
+    // Add an extra random user to make 10 total (since 'you' is not included)
+    randomUsers.push({ name: getRandomName(), score: getRandomScore() });
+    leaderboardrc2 = [...randomUsers].sort((a, b) => b.score - a.score);
+    userRank = Math.floor(Math.random() * (2000 - 500 + 1)) + 500; // Random rank 500–2000
+  }
+
+  const top10 = leaderboardrc2.slice(0, 10);
+  return { top10, userRank };
+}
+
+function generateUniqueRandomName(usedNames) {
+  const allNames = ["गुंजन", "निहारिका", "कविता", "प्रिया", "स्वाति", "पूजा", "स्नेहा", "अनिता", "नेहा", "शालिनी","आरती कुशवाह", "किरण", "राधा", "संगीता", "मधु", "रेणु", "नंदिनी", "शिवानी", "तृप्ति", "भारती",
+"दिव्या", "पारुल", "प्रियंका", "आराधना", "ज्योति रावत", "मेघा", "तनु यादव", "रुचि", "रचना", "ममता",
+"कंचन शर्मा", "दीपा", "श्वेता शर्मा", "नूतन", "कल्पना", "सावित्री", "लक्ष्मी", "भावना", "अर्चना", "सुजाता",
+"कुहू यादव", "इरा खान", "पायल", "तन्वी रावत", "मान्या अवस्थी", "निकिता", "कविता", "नेहा शर्मा", "रिमा यादव", "अनामिका", "अर्जुन वर्मा", "राहुल शर्मा", "अमित सिंह", "सौरभ पटेल", "अभिषेक त्रिपाठी", "विक्रम राठौर", "मनोज मिश्रा", "संजय यादव", "दीपक अग्रवाल", "अजय गुप्ता",
+"नितिन जोशी", "मयंक तिवारी", "पंकज चौधरी", "आकाश कुशवाह", "विकास मालवीय", "अंकित ठाकुर", "करण महाजन", "अमन कश्यप", "कुशल चतुर्वेदी", "रवि शुक्ला",
+"प्रमोद श्रीवास्तव", "सुमित सक्सेना", "नरेश रावत", "विनय पांडेय", "शिवम गुप्ता", "प्रकाश राजपूत", "सुनील ठाकुर", "राजीव वर्मा", "नीरज कुमार", "गौरव शर्मा",
+"योगेश सेठ", "हर्ष रावत", "दिनेश चौहान", "अशोक उपाध्याय", "ललित सेन", "कमलेश यादव", "अनिल जैन", "तेजस दवे", "रोहित बिष्ट", "शैलेश परमार",
+"भूपेंद्र यादव", "देवेश शंकर", "राजेश राठौड़", "श्रवण नागर", "मोहित मेहता", "धीरज बंसल", "विवेक सहगल", "अनुज बग्गा", "तरुण माथुर", "संदीप कुशवाह"];
+  let name;
+  do {
+    name = allNames[Math.floor(Math.random() * allNames.length)];
+  } while (usedNames.includes(name));
+  return name;
+}
+
+function showDescription(description) {
+  const descBox = document.getElementById("descriptionBox");
+  const descText = document.getElementById("descriptionText");
+
+  descText.innerHTML = description;
+  descBox.style.display = "block";
+
+  // एनिमेशन शुरू करने से पहले opacity और transform reset करें
+  requestAnimationFrame(() => {
+    descBox.style.opacity = 1;
+    descBox.style.transform = "translateY(0)";
+  });
+}
+
+
+function resumeQuiz() {
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2"));
+  currentQuestion = saved.currentQuestion || 0;
+  score = saved.score || 0;
+  document.getElementById("continueModalrc2").classList.add("hidden");
+  document.getElementById("quizPagerc2").classList.remove("hidden");
+  showQuestion();
+}
+
+function startFresh() {
+  localStorage.removeItem("quizUserrc2");
+  document.getElementById("continueModalrc2").classList.add("hidden");
+  currentQuestion = 0;
+  score = 0;
+  document.getElementById("quizPagerc2").classList.remove("hidden");
+  showQuestion();
+}
+
+function renderQuestionPalette() {
+  const palette = document.getElementById("questionPaletterc2");
+  palette.innerHTML = ""; // पहले साफ़ करें
+
+  for (let i = 0; i < questions.length; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i + 1;
+    btn.className = "w-8 h-8 rounded-full border text-sm font-semibold flex items-center justify-center";
+    
+    if (i === currentQuestion) {
+      btn.classList.add("bg-purple-600", "text-white");
+    } else {
+      btn.classList.add("bg-white", "text-purple-800", "border-purple-400");
+    }
+
+    btn.disabled = true; // user click न कर सके (optional)
+    palette.appendChild(btn);
+  }
+}
+
+function showResultPage(data) {
+  document.getElementById("quizPagerc2").classList.add("hidden");
+  document.getElementById("resultPagerc2").classList.remove("hidden");
+
+   const scorePercent = data.score;
+
+  // Set Score Data
+  document.getElementById("finalScorerc2").textContent = `${scorePercent} %`;
+  document.getElementById("completionrc2").textContent = `${scorePercent}%`;
+  document.getElementById("totalQrc2").textContent = data.total;
+  document.getElementById("correctrc2").textContent = data.correct;
+  document.getElementById("wrongrc2").textContent = data.total - data.correct;
+
+  // Review Section
+  const review = data.review.map((q, i) => `
+  <p style="line-height:1.7;"><strong>Q${i + 1} :</strong> ${q.question}<br/>
+  <span class="text-blue-700">✔ सही उत्तर : ${q.correct}</span></p>
+  ${q.description ? `
+  <div class="desc-box" style="background:#f9f9f9; padding:10px; font-size:10px; color:green; border-left:4px solid green;">
+    <strong>Explanation:</strong><p style="font-size:10px; color:#000;"> ${q.description}</p>
+  </div>` : ""}
+`).join("<hr class='my-2'/>");
+  document.getElementById("answerReviewrc2").innerHTML = review;
+
+  // 🏆 NEW: Use updated generateLeaderboard logic
+  const { top10, userRank } = generateLeaderboardrc2(scorePercent);
+
+  // Render Rank
+  document.getElementById("userRankrc2").textContent = `🎖️ आपकी रैंक : ${userRank}`;
+
+  // Render Top 10 Leaderboard
+  const usedNames = [];
+  const leaderboardHTML = top10.map((entry, i) => {
+    const isYou = entry.name === "you";
+    const name = isYou ? "you" : generateUniqueRandomName(usedNames);
+    usedNames.push(name);
+    return `
+      <div class="flex justify-between items-center px-3 py-1 rounded ${isYou ? 'bg-yellow-100 font-bold' : ''}">
+        <div class="w-6 text-left text-gray-700">${i + 1}.</div>
+        <div class="flex-1 text-center text-purple-800">${name}</div>
+        <div class="text-sm bg-purple-500 text-white px-2 py-1 rounded-full">${entry.score} %</div>
+      </div>
+    `;
+  }).join("");
+  document.getElementById("topLeaderboardrc2").innerHTML = `<strong class="block mb-2">📊 Top 10 Leaderboard</strong>${leaderboardHTML}`;
+
+  // 🕓 Save History
+  let history = JSON.parse(localStorage.getItem("scoreHistoryrc2") || "[]");
+  history.unshift({ score: scorePercent, date: new Date().toLocaleString() });
+  history = history.sort((a, b) => b.score - a.score).slice(0, 2);
+  localStorage.setItem("scoreHistoryrc2", JSON.stringify(history));
+
+  document.getElementById("scoreHistoryrc2").innerHTML = 
+    `<strong class="text-sl block mb-2">Your Top Attempts :</strong>
+     <div class="space-y-3">
+       ${history.map((h, i) => {
+         const badgeClass = getScoreBadge(h.score);
+         const isBest = h.score === Math.max(...history.map(x => x.score));
+         return `
+           <div class="bg-white border border-purple-300 rounded-xl p-4 shadow-md flex justify-between items-center">
+             <div>
+               <p class="font-semibold text-purple-800">Attempt ${i + 1}</p>
+               <p class="text-sm text-gray-600 mt-1">${h.date}</p>
+               ${isBest ? `<span class="inline-block mt-1 text-xs text-green-700 font-semibold">🎯 Best Attempt</span>` : ""}
+             </div>
+             <div class="px-4 py-1 rounded-full text-sm font-bold shadow ${badgeClass}">${h.score}%</div>
+           </div>
+         `;
+       }).join("")}
+     </div>`;
+
+  // 🎉 Confetti
+  confetti({
+    particleCount: 140,
+    spread: 100,
+    origin: { y: 0.1 }
+  });
+}
+
+ 
+function getScoreBadge(score) {
+  if (score >= 90) return 'bg-green-600 text-white';
+  if (score >= 70) return 'bg-yellow-500 text-white';
+  return 'bg-red-500 text-white';
+}
+
+function getProcessedLeaderboardrc2() {
+  const rawData = JSON.parse(localStorage.getItem('leaderboardrc2') || '[]');
+  const processed = [];
+  const usedNames = [];
+
+  rawData.forEach(entry => {
+    if (entry.name === 'you') {
+      processed.push({ name: 'you', score: entry.score });
+    } else {
+      let randomName = generateRandomName(usedNames);
+      usedNames.push(randomName);
+      processed.push({ name: randomName, score: entry.score });
+    }
+  });
+
+  return processed.sort((a, b) => b.score - a.score);
+}
+
+function submitAnswer() {
+  currentQuestion++;
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2")) || { answered: {} };
+saved.currentQuestion = currentQuestion;
+saved.score = score;
+saved.total = questions.length;
+saved.completed = false;
+localStorage.setItem("quizUserrc2", JSON.stringify(saved));
+
+  if (currentQuestion >= questions.length) {
+    const review = questions.map(q => ({ question: q.question, correct: q.options[q.answer], description: q.description }));
+    const result = { completed: true, correct: score, score: Math.round((score / questions.length) * 100), total: questions.length, review };
+    let leaderboardrc2 = JSON.parse(localStorage.getItem("leaderboardrc2") || "[]");
+leaderboardrc2 = leaderboardrc2.filter(entry => entry.name !== "you");
+leaderboardrc2.push({ name: "you", score: Math.round((score / questions.length) * 100) });
+leaderboardrc2.sort((a, b) => b.score - a.score);
+localStorage.setItem("leaderboardrc2", JSON.stringify(leaderboardrc2));
+
+// Update current rank
+const rank = leaderboardrc2.findIndex(entry => entry.name === "you") + 1;
+document.getElementById("userRankrc2").textContent = `🎖️ आपकी रैंक : ${rank}`;
+    score = Math.round((score / questions.length) * 100);
+    localStorage.setItem("quizUserrc2", JSON.stringify(result));
+    showResultPage(result);
+  } else {
+    showQuestion();
+  }
+}
+
+function renderQuestionPalette() {
+  const palette = document.getElementById("questionPaletterc2");
+  palette.innerHTML = "";
+
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2")) || {};
+  const answered = saved.answered || {};
+
+  for (let i = 0; i < questions.length; i++) {
+    const btn = document.createElement("button");
+btn.textContent = i + 1;
+btn.className = "palette-btn";  // ✅ Simplified
+
+if (i === currentQuestion) {
+  btn.classList.add("current");
+}
+
+if (answered[i] === "correct") {
+  btn.classList.add("correct");
+} else if (answered[i] === "wrong") {
+  btn.classList.add("wrong");
+}
+    // क्लिक पर सवाल पर जाएँ
+    btn.onclick = () => {
+      currentQuestion = i;
+      showQuestion();
+    };
+
+    palette.appendChild(btn);
+  }
+}
+
+function saveScoreToLeaderboardrc2(score) {
+  const leaderboardrc2 = JSON.parse(localStorage.getItem('leaderboardrc2') || '[]');
+
+  // पिछले 'you' को random नाम देकर सेव करें (ताकि नए यूज़र को दिखे)
+  leaderboardrc2.forEach(entry => {
+    if (entry.name === 'you') {
+      entry.name = generateRandomName(leaderboardrc2.map(e => e.name));
+    }
+  });
+
+  // अब नया 'you' add करें
+  leaderboardrc2.push({ name: 'you', score });
+
+  localStorage.setItem('leaderboardrc2', JSON.stringify(leaderboardrc2));
+}
+
+function showQuestion() {
+  clearInterval(timer);
+  timeLeft = 30;
+  const timerEl = document.getElementById("timerrc2");
+  timerEl.classList.remove("blink");
+  timerEl.textContent = `${timeLeft}s`;
+
+  timer = setInterval(() => {
+  timeLeft--;
+  timerEl.textContent = `${timeLeft}s`;
+
+  if (timeLeft <= 15) {
+    timerEl.classList.remove("blink");
+    void timerEl.offsetWidth;
+    timerEl.classList.add("blink");
+
+    document.getElementById("timerrc2Text").textContent = "⏳ जल्दी उत्तर दें!";
+  } else {
+    document.getElementById("timerrc2Text").textContent = "";
+  }
+
+  if (timeLeft <= 0) {
+    clearInterval(timer);
+    autoSubmitAnswer();
+  }
+}, 1000);
+
+  const q = questions[currentQuestion];
+  document.getElementById("questionCounterrc2").textContent = `Q ${currentQuestion + 1}/${questions.length}`;
+
+  const questionTextEl = document.getElementById("questionText");
+  questionTextEl.classList.remove("zoom-out");
+  void questionTextEl.offsetWidth;
+  questionTextEl.textContent = q.question;
+  questionTextEl.classList.add("zoom-out");
+
+  const container = document.getElementById("optionsContainer");
+  container.innerHTML = "";
+
+  // ✅ CLEAR DESCRIPTION
+  const descBox = document.getElementById("descriptionBox");
+  const descText = document.getElementById("descriptionText");
+  descBox.style.display = "none";
+  descBox.style.opacity = 0;
+  descBox.style.transform = "translateY(10px)";
+  descText.innerHTML = "";
+
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2")) || { answered: {}, selected: {} };
+  const answeredStatus = saved.answered[currentQuestion];
+  const selectedOption = saved.selected ? saved.selected[currentQuestion] : null;
+
+  q.options.forEach((opt, i) => {
+    const div = document.createElement("div");
+    div.className = "option zoom-out";
+
+    const optionLabel = String.fromCharCode(65 + i);
+    div.innerHTML = `<strong>${optionLabel}.</strong> ${opt}`;
+
+    if (answeredStatus) {
+      if (i === q.answer) div.classList.add("correct");
+      if (typeof selectedOption === "number" && selectedOption === i && selectedOption !== q.answer) {
+        div.classList.add("wrong");
+      }
+    } else {
+      div.onclick = () => selectOption(div, i, q.answer);
+    }
+
+    container.appendChild(div);
+  });
+
+  if (answeredStatus) {
+    Array.from(container.children).forEach(opt => {
+      opt.onclick = null;
+    });
+  }
+
+  renderQuestionPalette();
+
+  const nextBtn = document.getElementById("nextBtnrc2");
+  nextBtn.onclick = handleNextClick;
+  document.getElementById("nextBtnWrapperrc2").style.display = "block";
+}
+
+function autoSubmitAnswer() {
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2")) || { answered: {}, selected: {} };
+  const q = questions[currentQuestion];
+
+  // कोई उत्तर नहीं चुना गया - timeout default = गलत
+  saved.answered[currentQuestion] = "wrong";
+  saved.selected = saved.selected || {};
+  saved.selected[currentQuestion] = null;
+
+  // localStorage में सेव करें
+  localStorage.setItem("quizUserrc2", JSON.stringify(saved));
+
+  // सही उत्तर दिखाएँ
+  const container = document.getElementById("optionsContainer");
+  container.innerHTML = "";
+
+  q.options.forEach((opt, i) => {
+    const div = document.createElement("div");
+    div.className = "option zoom-out";
+    const optionLabel = String.fromCharCode(65 + i);
+    div.innerHTML = `<strong>${optionLabel}.</strong> ${opt}`;
+    if (i === q.answer) div.classList.add("correct");
+    container.appendChild(div);
+  });
+
+  showDescription(q.description); // ✅ ये भी add कर सकते हैं
+
+  // अब actual submit करें
+  setTimeout(() => {
+    submitAnswer();
+  }, 2000);
+}
+
+
+function selectOption(elem, selected, correct) {
+  clearInterval(timer);
+  const options = document.querySelectorAll(".option");
+  options.forEach(opt => opt.onclick = null);
+
+  // Save Answer Status
+  const saved = JSON.parse(localStorage.getItem("quizUserrc2")) || { answered: {} };
+  if (selected === correct) {
+    elem.classList.add("correct");
+    score++;
+    saved.answered[currentQuestion] = "correct";
+  } else {
+    elem.classList.add("wrong");
+    options[correct].classList.add("correct");
+    saved.answered[currentQuestion] = "wrong";
+  }
+  
+  showDescription(questions[currentQuestion].description);
+
+  saved.score = score;
+  saved.selected = saved.selected || {};
+saved.selected[currentQuestion] = selected;
+  saved.currentQuestion = currentQuestion;
+  saved.total = questions.length;
+  saved.completed = false;
+  localStorage.setItem("quizUserrc2", JSON.stringify(saved));
+  saved.selectedOption = saved.selectedOption || {};
+  saved.selectedOption[currentQuestion] = selected;
+  renderQuestionPalette(); // Palette रंग अपडेट करें
+
+  const nextBtn = document.querySelector("button[onclick='submitAnswer()']");
+  nextBtn.textContent = currentQuestion === questions.length - 1 ? "💥 Show Result" : "Next Question ➲";
+}
+
+
+function resetQuiz() {
+  // Popup को हाइड करें
+  document.getElementById("restartPopup").classList.add("hidden");
+
+  // क्विज प्रगति और रिज़ल्ट हटाएं
+  localStorage.removeItem("quizUserrc2");
+
+  // सवालों को रैंडमाइज़ करें
+  questions.sort(() => Math.random() - 0.5);
+
+  // इनिशियल वैल्यूज सेट करें
+  currentQuestion = 0;
+  score = 0;
+  
+  const descBox = document.getElementById("descriptionBox");
+  if (descBox) {
+    descBox.style.display = "none";
+    descBox.style.opacity = 0;
+    descBox.style.transform = "translateY(10px)";
+  }
+
+  // रिजल्ट पेज छुपाएँ और क्विज़ पेज दिखाएँ
+  document.getElementById("resultPagerc2").classList.add("hidden");
+  document.getElementById("quizPagerc2").classList.remove("hidden");
+
+  showQuestion(); // पहला सवाल दिखाएँ
+}
+
+</script>
+<script>
+// ✅ Consent checkbox से बटन enable/disable करें
+document.addEventListener("DOMContentLoaded", () => {
+  const checkbox = document.getElementById("consentCheckbox");
+  const startBtn = document.getElementById("startQuizBtn");
+
+  checkbox.addEventListener("change", () => {
+    startBtn.disabled = !checkbox.checked;
+    startBtn.classList.toggle("opacity-50", !checkbox.checked);
+    startBtn.classList.toggle("cursor-not-allowed", !checkbox.checked);
+  });
+});
+
+// ✅ Start Quiz Button Handler
+function startQuiz() {
+  document.getElementById("consentPagerc2").classList.add("hidden");
+  document.getElementById("quizPagerc2").classList.remove("hidden");
+  showQuestion();
+}
+</script>
+<script>
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loaderOverlay");
+    if (loader) loader.style.display = "none";
+  });
+</script>
+
+<script>
+function showRestartPopup() {
+  const popup = document.getElementById("restartPopup");
+  const box = document.getElementById("restartPopupBox");
+
+  popup.classList.remove("hidden");
+
+  // Animate In
+  setTimeout(() => {
+    box.classList.add("scale-100", "opacity-100");
+    box.classList.remove("scale-95", "opacity-0");
+  }, 50);
+}
+
+function hideRestartPopup() {
+  const popup = document.getElementById("restartPopup");
+  const box = document.getElementById("restartPopupBox");
+
+  // Animate Out
+  box.classList.remove("scale-100", "opacity-100");
+  box.classList.add("scale-95", "opacity-0");
+
+  setTimeout(() => {
+    popup.classList.add("hidden");
+  }, 300);
+}
+</script>
